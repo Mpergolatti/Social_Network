@@ -20,10 +20,21 @@ const ThoughtSchema = new Schema (
   },
 
   {
-    username: {}
+    username: {
+      type: String,
+      required: true
+    }
   },
 
   {
     reaction: {}
+  },
+  {
+    toJSON: {
+      getters: true
+    },
+    id: false
   }
 )
+
+module.exports = ThoughtSchema;
