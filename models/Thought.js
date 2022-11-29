@@ -1,5 +1,6 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const moment = require('moment');
+const ReactionSchema = require('./Reaction');
 
 const ThoughtSchema = new Schema (
   {
@@ -25,16 +26,23 @@ const ThoughtSchema = new Schema (
       required: true
     }
   },
-
+  // Use reactionSchema to validate
   {
-    reaction: {}
+    reaction: [ReactionSchema]
   },
   {
     toJSON: {
-      getters: true
+      getters: true,
+      virtuals: true
     },
     id: false
   }
-)
+);
+
+ThoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length;
+});
+
+const Thought = model('Thought', ThoughtSchema);
 
 module.exports = ThoughtSchema;
